@@ -31,10 +31,13 @@ def getOrientation(pts, img):
     ## [pca]
     # Construct a buffer used by the pca analysis
     sz = len(pts)
+
     data_pts = np.empty((sz, 2), dtype=np.float64)
     for i in range(data_pts.shape[0]):
         data_pts[i, 0] = pts[i, 0, 0]
+        print("data_pts[i, 0]",data_pts[i, 0])
         data_pts[i, 1] = pts[i, 0, 1]
+        print("data_pts[i, 1]",data_pts[i, 1])
 
     # Perform PCA analysis
     mean = np.empty((0))
@@ -66,7 +69,7 @@ def getOrientation(pts, img):
 
 
 # Load the image
-img = cv.imread("../image/img2.png")
+img = cv.imread("../image/test1.png")
 
 # Was the image there?
 if img is None:
@@ -80,15 +83,18 @@ gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
 # Convert image to binary
 _, bw = cv.threshold(gray, 50, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
+print("bw",bw)
 
 # Find all the contours in the thresholded image
 contours, _ = cv.findContours(bw, cv.RETR_LIST, cv.CHAIN_APPROX_NONE)
 
 for i, c in enumerate(contours):
-
+  #print("c",c)
+    #c la matrix
     # Calculate the area of each contour
+    #ve hinh bao quay vat
+    #c la ma tran diem anh
     area = cv.contourArea(c)
-
     # Ignore contours that are too small or too large
     if area < 3700 or 100000 < area:
         continue
