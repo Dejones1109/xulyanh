@@ -35,10 +35,7 @@ def mousePoints(event,x,y,flags,params):
             pointsList.append([x,y])
         else:
             angle =getAngle(pointsList)
-            print(" The angle is ",angle)
-            # cv2.circle(img_contours, angle, 8, (200, 100, 55), -1)
-            # cv2.putText(img_contours, angle, (x,y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 0),
-            # lineType=cv2.LINE_AA)
+            print(" The angle is ",angle,"degrees")
             return pointsList
 def gradient(pt1,pt2):
     return (pt2[1] -pt1[1])/(pt2[0]-pt1[0])
