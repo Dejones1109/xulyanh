@@ -4,25 +4,38 @@ import math
 
 img = cv2.imread('../image/img2.png_noise.png', cv2.IMREAD_UNCHANGED)
 cv2.imshow("origin",img)
-scale_percent = 60  # percent of original size
+scale_percent = 45  # percent of original size
 width = int(img.shape[1] * scale_percent / 100)
 height = int(img.shape[0] * scale_percent / 100)
 dim = (width, height)
 # resize image
 resizedOrigin = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
+
 #Median Blur
-filteredMedianImg = cv2.medianBlur(img, ksize=5)
+filteredMedianImg = cv2.medianBlur(resizedOrigin, ksize=5)
 cv2.imshow('Median Blur image', filteredMedianImg)
+
 #erosion image
-kernel = np.ones((3,3),np.uint8)
-erosion_1 = cv2.erode(filteredMedianImg,kernel,iterations = 5)
+
+kernel = np.ones((7,7),np.uint8)
+erosion_1 = cv2.erode(filteredMedianImg,kernel,iterations = 1)
 cv2.imshow("erosion image",erosion_1)
+# kernel1 = np.ones((5,5),np.uint8)
+# dilate = cv2.dilate(erosion_1,kernel1,iterations = 5)
+# cv2.imshow("dilate image",dilate)
 # convert img to grey
 img_grey = cv2.cvtColor(erosion_1, cv2.COLOR_BGR2GRAY)
-# set a thresh
-thresh = 60
+
+edges = cv2.Canny(img_grey,55,70)
+cv2.imshow("edges image",edges)
+# imgCopyMakeBorder=cv2.copyMakeBorder(edges,1,1,1,1, cv2.BORDER_CONSTANT, value=[255,255,255])
+# cv2.imshow("copyMakeBorder image",imgCopyMakeBorder)
+
+
+# set a thresh : xác định ngưỡng để lấy bao viên
+thresh = 5
 # get threshold image
-ret, thresh_img = cv2.threshold(img_grey, thresh, 255, cv2.THRESH_BINARY)
+ret,thresh_img = cv2.threshold(edges, thresh, 255, cv2.THRESH_BINARY)
 # find contours
 contours, hierarchy = cv2.findContours(thresh_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -31,7 +44,7 @@ img_contours = np.zeros(erosion_1.shape)
 # draw the contours on the empty image
 cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 3)
 
-cv2.imshow("contours imagle",img_contours)
+cv2.imshow("contours image",img_contours)
 pointsList = []
 def mousePoints(event,x,y,flags,params):
     if event == cv2.EVENT_LBUTTONDOWN:

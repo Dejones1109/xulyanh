@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 
-img = cv2.imread('../image/img4.png', cv2.IMREAD_UNCHANGED)
+img = cv2.imread('../image/img3.png', cv2.IMREAD_UNCHANGED)
 scale_percent = 60  # percent of original size
 width = int(img.shape[1] * scale_percent / 100)
 height = int(img.shape[0] * scale_percent / 100)
@@ -10,14 +10,16 @@ dim = (width, height)
 # resize image
 resizedOrigin = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
 kernel = np.ones((3,3),np.uint8)
-erosion_1 = cv2.erode(resizedOrigin,kernel,iterations = 5)
+erosion_1 = cv2.erode(resizedOrigin,kernel,iterations = 7)
 cv2.imshow("erosion_1",erosion_1)
 # convert img to grey
 img_grey = cv2.cvtColor(erosion_1, cv2.COLOR_BGR2GRAY)
+edges = cv2.Canny(img_grey,80,200)
+cv2.imshow("edges image",edges)
 # set a thresh
 thresh = 60
 # get threshold image
-ret, thresh_img = cv2.threshold(img_grey, thresh, 255, cv2.THRESH_BINARY)
+ret, thresh_img = cv2.threshold(edges, thresh, 255, cv2.THRESH_BINARY)
 # find contours
 contours, hierarchy = cv2.findContours(thresh_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
