@@ -10,11 +10,11 @@ dim = (width, height)
 # resize image
 resizedOrigin = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
 kernel = np.ones((3,3),np.uint8)
-erosion_1 = cv2.erode(resizedOrigin,kernel,iterations = 3)
+erosion_1 = cv2.erode(resizedOrigin,kernel,iterations = 4)
 cv2.imshow("erosion_1",erosion_1)
 # convert img to grey
 img_grey = cv2.cvtColor(erosion_1, cv2.COLOR_BGR2GRAY)
-edges = cv2.Canny(img_grey,80,230)
+edges = cv2.Canny(img_grey,80,220)
 cv2.imshow("edges image",edges)
 # set a thresh
 thresh = 60
